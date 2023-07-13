@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 /// シングルトンコンポーネント
 /// </summary>
 /// <typeparam name="TClass"></typeparam>
-public class SingletonComponent<TClass> : MonoBehaviour where TClass : MonoBehaviour
+public abstract class SingletonComponent<TClass> : MonoBehaviour where TClass : MonoBehaviour
 {
     static private TClass instance;
 
@@ -17,6 +17,8 @@ public class SingletonComponent<TClass> : MonoBehaviour where TClass : MonoBehav
         Assert.IsNull(instance, $"{this.GetType().Name}はシングルトンコンポーネントのため、単一でなければなりません");
 
         instance = this as TClass;
+
+        OnAwake();
     }
 
     private void OnDestroy()
@@ -28,4 +30,6 @@ public class SingletonComponent<TClass> : MonoBehaviour where TClass : MonoBehav
     {
         instance = default;
     }
+
+    public virtual void OnAwake() { }
 }
