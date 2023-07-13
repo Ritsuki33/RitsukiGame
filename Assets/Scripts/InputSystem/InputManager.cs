@@ -7,7 +7,7 @@ public class InputManager : SingletonComponent<InputManager>
     PlayerInputAction inputAction = default;
     InputController inputController = default;
 
-    private void Start()
+    protected override void OnAwake()
     {
         inputAction = new PlayerInputAction();
         Setup();
