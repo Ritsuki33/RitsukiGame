@@ -31,5 +31,5 @@ public abstract class SingletonComponent<TClass> : MonoBehaviour where TClass : 
         instance = default;
     }
 
-    public virtual void OnAwake() { }
+    protected virtual void OnAwake() { }
 }
