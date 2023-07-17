@@ -25,4 +25,12 @@ public abstract class ScreenBase<TView, TPresenter, TViewModel> : MonoBehaviour,
         return presenter;
     }
 
+
+    public virtual void OnShow() { }
+    public virtual IEnumerator OnShowCoroutine() { yield return null; }
+    public virtual void OnShowComplete() { }
+
+    public virtual void OnHide() { }
+    public virtual IEnumerator  OnHideCoroutine() { yield return null; }
+    public virtual void OnHideComplete() { }
 }

@@ -8,15 +8,16 @@ public class ScreenContainer<TEnum> where TEnum : Enum
 
     Dictionary<TEnum, IScreen> screenDic = new Dictionary<TEnum, IScreen>();
 
+    //TEnum currentType = default;
     IScreen currentScreen = default;
-    IPresenter currentPresenter = default;
+    IPresenter m_ActivePresenter = default;
 
     /// <summary>
     /// スクリーンの登録
     /// </summary>
     /// <param name="type"></param>
     /// <param name="screen"></param>
-    public void Register(TEnum type,IScreen screen)
+    public void Register(TEnum type, IScreen screen)
     {
         screenDic[type] = screen;
     }
@@ -43,43 +44,78 @@ public class ScreenContainer<TEnum> where TEnum : Enum
             Debug.LogError($"{type.ToString()}にスクリーンが登録されていません。");
             return;
         }
-
-        var nextScreen = screenDic[type];
-        if (currentScreen == nextScreen)
+        if (currentScreen == screenDic[type])
         {
             Debug.Log($"{type.ToString()}遷移先が現在と同じなので遷移しません。");
             return;
         }
-        TransitProcess(nextScreen, immediate);
+
+        TransitProcess(type, immediate);
     }
 
 
-    void TransitProcess(IScreen nextScreen, bool immediate)
+    void TransitProcess(TEnum type, bool immediate)
     {
         if (immediate)
         {
-            currentPresenter?.Hide();
-            currentPresenter?.HideComplete();
-
+            if (m_ActivePresenter != null)
+            {
+                Hide();
+            }
 
             // シーンの初期化
-            currentPresenter = currentScreen.Initialize();
+            m_ActivePresenter = screenDic[type].Initialize();
 
             // 新しいシーンに合わせる
-            currentScreen = nextScreen;
+            currentScreen = screenDic[type];
 
-            currentPresenter.Show();
-            currentPresenter.ShowComplete();
+            Show();
         }
         else
         {
-            //未実装
+            RunCroutineManager.Instance.StartCroutine(TransitCroutine(type));
         }
     }
 
-    void Hide(IPresenter presenter)
+    void Hide()
     {
-        presenter.Hide();
-        currentPresenter.HideComplete();
+        m_ActivePresenter.Hide();
+        m_ActivePresenter.HideComplete();
+    }
+
+    void Show()
+    {
+        m_ActivePresenter.Show();
+        m_ActivePresenter.ShowComplete();
+    }
+
+    IEnumerator TransitCroutine(TEnum type)
+    {
+        if (m_ActivePresenter != null)
+        {
+            yield return HideCoroutine(m_ActivePresenter);
+        }
+
+        // シーンの初期化
+        m_ActivePresenter = screenDic[type].Initialize();
+
+        // 新しいシーンに合わせる
+        currentScreen = screenDic[type];
+
+        yield return ShowCoroutine(m_ActivePresenter);
+    }
+
+    IEnumerator HideCoroutine(IPresenter presenter)
+    {
+        yield return presenter.HideCoroutine();
+        presenter.HideComplete();
+
+    }
+
+    IEnumerator ShowCoroutine(IPresenter presenter)
+    {
+        yield return presenter.ShowCoroutine();
+        m_ActivePresenter.ShowComplete();
+
     }
 }

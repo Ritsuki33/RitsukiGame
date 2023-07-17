@@ -43,29 +43,53 @@ public abstract class ScreenPresenterBase<TView, TPresenter, TViewModel>: IPrese
 
     public void Hide()
     {
+        m_Screen.OnHide();
+        OnHide();
+        m_Screen.gameObject.SetActive(false);
     }
 
     public void HideComplete()
     {
+        m_Screen.OnHideComplete();
+        OnHideComplete();
     }
 
     public IEnumerator HideCoroutine()
     {
-        yield return null;
+        yield return m_Screen.OnHideCoroutine();
+        yield return OnHideCoroutine();
+        m_Screen.gameObject.SetActive(false);
+
     }
-
-
 
     public void Show()
     {
+        m_Screen.OnShow();
+        OnShow();
+        m_Screen.gameObject.SetActive(true);
     }
 
     public void ShowComplete()
     {
+        m_Screen.OnShowComplete();
+        OnShowComplete();
     }
 
     public IEnumerator ShowCoroutine()
     {
-        yield return null;
+        yield return m_Screen.OnShowCoroutine();
+        yield return OnShowCoroutine();
+
+        m_Screen.gameObject.SetActive(true);
+
     }
+
+    protected virtual void OnShow() { }
+    protected virtual IEnumerator OnShowCoroutine() { yield return null; }
+    protected virtual void OnShowComplete() { }
+
+    protected virtual void OnHide() { }
+    protected virtual IEnumerator OnHideCoroutine() { yield return null; }
+    protected virtual void OnHideComplete() { }
+
 }

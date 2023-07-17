@@ -1,0 +1,26 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class #SCRIPTNAME# : ScreenBase<#SCRIPTNAME#, #SCRIPTNAME#Presenter, #SCRIPTNAME#ViewModel>
+{
+    public override void Configure(#SCRIPTNAME#ViewModel viewModel)
+    {
+
+    }
+}
+
+public class #SCRIPTNAME#Presenter : ScreenPresenterBase<#SCRIPTNAME#, #SCRIPTNAME#Presenter, #SCRIPTNAME#ViewModel>
+{
+    public override void Configure(#SCRIPTNAME# screen, #SCRIPTNAME#ViewModel viewModel)
+    {
+
+    }
+}
+
+public class #SCRIPTNAME#ViewModel : ScreenViewModelBase
+{
+    public override void Configure()
+    {
+
+    }
+}
