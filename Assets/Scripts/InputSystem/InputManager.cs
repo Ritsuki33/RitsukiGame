@@ -37,4 +37,14 @@ public class InputManager : SingletonComponent<InputManager>
         // これをしないと入力が反映されない。
         inputAction.Enable();
     }
+
+    /// <summary>
+    /// ボタンコンテキスト取得
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public IInputContextButton GetContext(InputController.Button type)
+    {
+        return inputController[type];
+    }
 }

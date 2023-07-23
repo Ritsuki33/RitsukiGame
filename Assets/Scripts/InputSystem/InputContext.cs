@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class InputContext<T> where T : struct
 {
-    T value;
+    public bool isUse { get; set; }
 
-    public T Value => value;
+    protected T value;
 
-    InputAction inputAction = default;
+    protected InputAction inputAction = default;
 
     public InputContext(InputAction inputAction)
     {
+        isUse = true;
         this.inputAction = inputAction;
     }
 
     public void InputUpdate()
     {
         value = inputAction.ReadValue<T>();
+    }
+
+    public void SetUsable(bool val)
+    {
+        isUse = val;
     }
 }
