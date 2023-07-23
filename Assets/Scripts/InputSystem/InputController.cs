@@ -20,14 +20,14 @@ public class InputController
     }
 
     //　ボタン
-    public InputContext<float> Decide => this[Button.EastButton];
-    public InputContext<float> Back => this[Button.EastButton];
+    public IInputContextButton EastButton => this[Button.EastButton];
+    public IInputContextButton SouthButton => this[Button.SouthButton];
 
     // Axis
-    public InputContext<Vector2> Move => this[Axis.LeftStick];
+    public IInputContextDirection LeftStick => this[Axis.LeftStick];
 
-    private InputContext<float>[] inputButtonContext = new InputContext<float>[(int)Button.Max];
-    private InputContext<Vector2>[] inputAxisContext = new InputContext<Vector2>[(int)Axis.Max];
+    private InputContextButton[] inputButtonContext = new InputContextButton[(int)Button.Max];
+    private InputContextDirection[] inputAxisContext = new InputContextDirection[(int)Axis.Max];
 
     /// <summary>
     /// コンストラクタ
@@ -36,11 +36,11 @@ public class InputController
     public InputController(PlayerInputAction.UIActions actions)
     {
         // ボタン設定
-        this[Button.EastButton] = new InputContext<float>(actions.Decide);
-        this[Button.SouthButton] = new InputContext<float>(actions.Back);
+        this[Button.EastButton] = new InputContextButton(actions.Decide);
+        this[Button.SouthButton] = new InputContextButton(actions.Back);
 
         // Axis
-        this[Axis.LeftStick] = new InputContext<Vector2>(actions.Move);
+        this[Axis.LeftStick] = new InputContextDirection(actions.Move);
     }
 
     /// <summary>
@@ -60,11 +60,31 @@ public class InputController
     }
 
     /// <summary>
+    /// ボタン取得
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    public IInputContextButton GetContextButton(Button button)
+    {
+        return this[button];
+    }
+
+    /// <summary>
+    /// Axis取得
+    /// </summary>
+    /// <param name="axis"></param>
+    /// <returns></returns>
+    public IInputContextDirection GetContextDirection(Axis axis)
+    {
+        return this[axis];
+    }
+
+    /// <summary>
     /// インデクサ
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public InputContext<float> this[Button type]
+    public IInputContextButton this[Button type]
     {
         get
         {
@@ -72,7 +92,7 @@ public class InputController
         }
         set
         {
-            inputButtonContext[(int)type] = value;
+            inputButtonContext[(int)type] = value as InputContextButton;
         }
     }
     
@@ -81,14 +101,15 @@ public class InputController
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public InputContext<Vector2> this[Axis type]
+    public IInputContextDirection this[Axis type]
     {
-        get { 
+        get
+        {
             return inputAxisContext[(int)type];
         }
         set
         {
-            inputAxisContext[(int)type] = value;
+            inputAxisContext[(int)type] = value as InputContextDirection;
         }
     }
 }

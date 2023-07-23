@@ -31,6 +31,10 @@ public class ScreenContainer<TEnum> where TEnum : Enum
         screenDic.Remove(type);
     }
 
+    public void OnUpdate(InputInfo info)
+    {
+        m_ActivePresenter?.OnUpdate(info);
+    }
 
     /// <summary>
     /// スクリーン遷移
@@ -77,19 +81,19 @@ public class ScreenContainer<TEnum> where TEnum : Enum
         }
     }
 
-    void Hide()
+    private void Hide()
     {
         m_ActivePresenter.Hide();
         m_ActivePresenter.HideComplete();
     }
 
-    void Show()
+    private void Show()
     {
         m_ActivePresenter.Show();
         m_ActivePresenter.ShowComplete();
     }
 
-    IEnumerator TransitCroutine(TEnum type)
+    private IEnumerator TransitCroutine(TEnum type)
     {
         if (m_ActivePresenter != null)
         {
@@ -105,14 +109,14 @@ public class ScreenContainer<TEnum> where TEnum : Enum
         yield return ShowCoroutine(m_ActivePresenter);
     }
 
-    IEnumerator HideCoroutine(IPresenter presenter)
+    private IEnumerator HideCoroutine(IPresenter presenter)
     {
         yield return presenter.HideCoroutine();
         presenter.HideComplete();
 
     }
 
-    IEnumerator ShowCoroutine(IPresenter presenter)
+    private IEnumerator ShowCoroutine(IPresenter presenter)
     {
         yield return presenter.ShowCoroutine();
         m_ActivePresenter.ShowComplete();

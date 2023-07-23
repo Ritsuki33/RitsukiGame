@@ -16,6 +16,7 @@ public abstract class ScreenBase<TView, TPresenter, TViewModel> : MonoBehaviour,
     public abstract void Configure(TViewModel viewModel);
 
     IPresenter presenter;
+
     IPresenter IScreen.Initialize()
     {
         var presenter = new TPresenter();
