@@ -79,7 +79,7 @@ public class UIDoTweenBehavior : MonoBehaviour
     {
         Sequence sequence = DOTween.Sequence();
 
-        foreach (var i in show)
+        foreach (var i in hide)
         {
             switch (i.linkType)
             {
@@ -91,6 +91,11 @@ public class UIDoTweenBehavior : MonoBehaviour
                     break;
             }
         }
+
+        sequence.OnComplete(() => { isCompleted?.Invoke(); });
+
+        sequence.Play();
+
     }
 }
 
