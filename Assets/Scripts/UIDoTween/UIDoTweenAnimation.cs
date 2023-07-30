@@ -17,7 +17,7 @@ DoTweenのChangeStartValueに関して
     ChangeStartValueに関する記事も少ないため、このプロジェクトでは非推奨とする。
 ===================================================================================
  */
-public class UIDoTweenBehavior : MonoBehaviour
+public class UIDoTweenAnimation : MonoBehaviour
 {
     public enum LinkType
     {
@@ -53,7 +53,7 @@ public class UIDoTweenBehavior : MonoBehaviour
         }
     }
 
-    public void Show(Action isCompleted)
+    public void Show(Action isCompleted = null)
     {
         Sequence sequence = DOTween.Sequence();
 
@@ -75,7 +75,7 @@ public class UIDoTweenBehavior : MonoBehaviour
         sequence.Play();
     }
 
-    public void Hide(Action isCompleted)
+    public void Hide(Action isCompleted = null)
     {
         Sequence sequence = DOTween.Sequence();
 
@@ -138,7 +138,7 @@ public class UIDoTween
         }
     }
 
-    public Tween CreateTween(UIDoTweenBehavior obj)
+    public Tween CreateTween(UIDoTweenAnimation obj)
     {
         Assert.IsNotNull(tweenParam, "UIDoTweenパラメータがNULLです。");
         return tweenParam.CreateTween(obj);
@@ -150,7 +150,7 @@ public class UIDoTween
     [Serializable]
     public class TweenParam
     {
-        public virtual Tween CreateTween(UIDoTweenBehavior obj) { return null; }
+        public virtual Tween CreateTween(UIDoTweenAnimation obj) { return null; }
     }
 
     [Serializable]
@@ -161,7 +161,7 @@ public class UIDoTween
         [SerializeField, Header("間隔（秒）")] private float duration;
         [SerializeField, Header("イース")] private Ease ease = default;
 
-        public override Tween CreateTween(UIDoTweenBehavior obj)
+        public override Tween CreateTween(UIDoTweenAnimation obj)
         {
             RectTransform rectTransform = obj.transform as RectTransform;
 
@@ -180,7 +180,7 @@ public class UIDoTween
         [SerializeField, Header("間隔（秒）")] private float duration;
         [SerializeField, Header("イース")] private Ease ease = default;
 
-        public override Tween CreateTween(UIDoTweenBehavior obj)
+        public override Tween CreateTween(UIDoTweenAnimation obj)
         {
             var image = obj.GetComponent<Image>();
             
@@ -200,7 +200,7 @@ public class UIDoTween
         [SerializeField, Header("回転方法")] private RotateMode mode = RotateMode.FastBeyond360;
         [SerializeField, Header("イース")] private Ease ease = default;
 
-        public override Tween CreateTween(UIDoTweenBehavior obj)
+        public override Tween CreateTween(UIDoTweenAnimation obj)
         {
             Sequence seq = DOTween.Sequence();
             seq.Append(obj.transform.DORotate(startRotate, duration, mode));
@@ -223,7 +223,7 @@ public class UIDoTween
 
         private Vector2 goal = default;
 
-        public override Tween CreateTween(UIDoTweenBehavior obj)
+        public override Tween CreateTween(UIDoTweenAnimation obj)
         {
             Sequence seq = DOTween.Sequence();
             RectTransform rectTransform = obj.transform as RectTransform;
@@ -242,7 +242,7 @@ public class UIDoTween
         [SerializeField, Header("イース")] private Ease ease = default;
 
 
-        public override Tween CreateTween(UIDoTweenBehavior obj)
+        public override Tween CreateTween(UIDoTweenAnimation obj)
         {
             Sequence seq = DOTween.Sequence();
             

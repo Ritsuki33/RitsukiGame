@@ -104,6 +104,8 @@ public abstract class ScreenPresenterBase<TView, TPresenter, TViewModel>: IPrese
     {
         m_Screen.OnShow();
         OnShow();
+
+        m_Screen.UIAnimation?.Show();
         m_Screen.gameObject.SetActive(true);
     }
 
@@ -117,6 +119,8 @@ public abstract class ScreenPresenterBase<TView, TPresenter, TViewModel>: IPrese
     {
         yield return m_Screen.OnShowCoroutine();
         yield return OnShowCoroutine();
+
+        m_Screen.UIAnimation?.Show();
 
         m_Screen.gameObject.SetActive(true);
 
