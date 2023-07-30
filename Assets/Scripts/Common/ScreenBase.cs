@@ -13,7 +13,9 @@ public abstract class ScreenBase<TView, TPresenter, TViewModel> : MonoBehaviour,
     where TPresenter : ScreenPresenterBase<TView, TPresenter, TViewModel>, new()
     where TViewModel : ScreenViewModelBase, new()
 {
-    public abstract void Configure(TViewModel viewModel);
+    [SerializeField] UIDoTweenAnimation uIAnimation = default;
+
+    public UIDoTweenAnimation UIAnimation => UIAnimation;
 
     IPresenter presenter;
 
@@ -26,6 +28,7 @@ public abstract class ScreenBase<TView, TPresenter, TViewModel> : MonoBehaviour,
         return presenter;
     }
 
+    public abstract void Configure(TViewModel viewModel);
 
     public virtual void OnShow() { }
     public virtual IEnumerator OnShowCoroutine() { yield return null; }
